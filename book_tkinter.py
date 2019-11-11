@@ -1,5 +1,8 @@
 from tkinter import *
 import book_database
+import tkinter.messagebox as mb
+from datetime import datetime as dt
+import re
 
 def get_selected_row(event):
     try:
@@ -24,25 +27,69 @@ def view_command():
         list1.insert(END,row)
 
 def search_command():
+    list=[]
+    for i in list:
+        list.append(title_text.get())
+        print(type(list))
+        print(list)
     list1.delete(0,END)
     for row in book_database.search(title_text.get(),author_text.get(),year_text.get(),isbn_text.get()):
+        new=author_text.get()
         list1.insert(END,row)
 
 def add_command():
-    
-    book_database.insert(title_text.get(),author_text.get(),year_text.get(),isbn_text.get())
-    list1.delete(0,END)
-    search_command()
-    list1.delete(0,(list1.size()-2))
-    #list1.insert(END,(title_text.get(),author_text.get(),year_text.get(),isbn_text.get()))
+  # pattern=re.compile("[0-9]{4}")
+   #pattern.match(year_text.get())
+   if(int(year_text.get())>dt.now().year):
+        mb.showinfo("","Please Enter a valid Year")    
+   else:
+        pattern=re.compile("[0-9]{13}$")
+        pattern.match(isbn_text.get())
+        if(pattern.match(isbn_text.get())):
+            pattern=re.compile("[a-zA-Z]+([\s][a-zA-Z]^[0-9]+)*")
+            pattern.match(author_text.get())
+            if(pattern.match(author_text.get())):
+                book_database.insert(title_text.get(),author_text.get(),year_text.get(),isbn_text.get())
+                list1.delete(0,END)
+                e1.delete(0,END)
+                e2.delete(0,END)
+                e3.delete(0,END)
+                e4.delete(0,END)
+                search_command()
+                list1.delete(0,(list1.size()-2))
+                mb.showinfo("","Value Added")
+            else:
+                mb.showinfo("","Author name contains Numeric Value!!")
+        else:
+                    mb.showinfo("","Invalid isbn Number")
+        #list1.insert(END,(title_text.get(),author_text.get(),year_text.get(),isbn_text.get()))
 
 def delete_command():
     book_database.delete(selected_tuple[0])
-
+    mb.showinfo("","Entry Deleted!")
+    list1.delete(0,END)
 def update_command():
-    book_database.update(selected_tuple[0],title_text.get(),author_text.get(),year_text.get(),isbn_text.get())
-    print(selected_tuple[0],title_text.get(),author_text.get(),year_text.get(),isbn_text.get())
-
+   if(int(year_text.get())>dt.now().year):
+        mb.showinfo("","Please Enter a valid Year")    
+   else:
+       pattern=re.compile("[0-9]{13}$")
+       pattern.match(isbn_text.get())
+       if(pattern.match(isbn_text.get())):
+           pattern=re.compile("[a-zA-Z]+([\s][a-zA-Z][^0-9]+)*")
+           pattern.match(author_text.get())
+           if(pattern.match(author_text.get())):
+               book_database.update(selected_tuple[0],title_text.get(),author_text.get(),year_text.get(),isbn_text.get())
+               print(selected_tuple[0],title_text.get(),author_text.get(),year_text.get(),isbn_text.get())
+               mb.showinfo("","Entry Updated successfully")
+               list1.delete(0,END)
+               e1.delete(0,END)
+               e2.delete(0,END)
+               e3.delete(0,END)
+               e4.delete(0,END)
+           else:
+               mb.showinfo("","Author name contains Numeric Value!!")
+       else:
+            mb.showinfo("","Invalid isbn Number")
 window=Tk()
 window.wm_title("BookStore")
 
