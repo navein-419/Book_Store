@@ -22,14 +22,6 @@ def view():
     conn.close()
     return rows
 
-def search(title="",author="",year="",isbn=""):
-    conn=sqlite3.connect("Books.db")
-    cur=conn.cursor()
-    cur.execute("SELECT * FROM book WHERE Title=? OR Author=? OR Year=? OR isbn=?",(title,author,year,isbn))
-    rows=cur.fetchall()
-    conn.close()
-    return rows
-
 def delete(id):
     conn=sqlite3.connect("Books.db")
     cur=conn.cursor()
