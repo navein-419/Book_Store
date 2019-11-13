@@ -46,7 +46,3 @@ def update(id,title,author,year,isbn):
 
 
 connect()
-#insert('The whale','will',2014,235)
-#delete(11)
-#update(3,'chemo','smooth',2012,23234)
-#print(view())
