@@ -27,16 +27,21 @@ def view_command():
         list1.insert(END,row)
 
 def search_command():
-    list=[]
-    for i in list:
-        list.append(title_text.get())
-        print(type(list))
-        print(list)
-    list1.delete(0,END)
-    for row in book_database.search(title_text.get(),author_text.get(),year_text.get(),isbn_text.get()):
-        new=author_text.get()
-        list1.insert(END,row)
 
+    list1.delete(0,END)
+    
+    for row in book_database.view():
+        #lst.append(row[3])
+        #print(row[3])
+        if (title_text.get().lower() in row[1].lower() and author_text.get().lower() in row[2].lower() and str(year_text.get()) in str(row[3]) and str(isbn_text.get()) in str(row[4])):            
+            #print(lst)
+            
+            list1.insert(END,row)
+       # elif author_text.get().lower() in row[2].lower():
+        #    print(lst)
+    #print(lst)
+                
+    
 def add_command():
   # pattern=re.compile("[0-9]{4}")
    #pattern.match(year_text.get())
@@ -46,9 +51,7 @@ def add_command():
         pattern=re.compile("[0-9]{13}$")
         pattern.match(isbn_text.get())
         if(pattern.match(isbn_text.get())):
-            pattern=re.compile("[a-zA-Z]+([\s][a-zA-Z]^[0-9]+)*")
-            pattern.match(author_text.get())
-            if(pattern.match(author_text.get())):
+            if(x.isalpha() or x.isspace() for x in author_text.get()):
                 book_database.insert(title_text.get(),author_text.get(),year_text.get(),isbn_text.get())
                 list1.delete(0,END)
                 e1.delete(0,END)
@@ -62,6 +65,7 @@ def add_command():
                 mb.showinfo("","Author name contains Numeric Value!!")
         else:
                     mb.showinfo("","Invalid isbn Number")
+
         #list1.insert(END,(title_text.get(),author_text.get(),year_text.get(),isbn_text.get()))
 
 def delete_command():
@@ -75,7 +79,7 @@ def update_command():
        pattern=re.compile("[0-9]{13}$")
        pattern.match(isbn_text.get())
        if(pattern.match(isbn_text.get())):
-           pattern=re.compile("[a-zA-Z]+([\s][a-zA-Z][^0-9]+)*")
+           pattern=re.compile("[a-zA-Z]+([\s][a-zA-Z]^[0-9]+)*")
            pattern.match(author_text.get())
            if(pattern.match(author_text.get())):
                book_database.update(selected_tuple[0],title_text.get(),author_text.get(),year_text.get(),isbn_text.get())
